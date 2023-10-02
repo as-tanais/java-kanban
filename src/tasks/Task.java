@@ -1,12 +1,12 @@
+package tasks;
+
 public class Task {
 
     protected String title;
     protected String description;
     protected int id;
-    protected String  status;
-    protected String  type;
-
-
+    protected String status;
+    protected String type;
 
     public Task(String title, String description) {
         this.title = title;
@@ -14,6 +14,7 @@ public class Task {
         this.status = "NEW";
         this.type = "TASK";
     }
+
     public int getId() {
         return id;
     }
@@ -21,7 +22,6 @@ public class Task {
     public void setId(int id) {
         this.id = id;
     }
-
 
     public String getStatus() {
         return status;
@@ -33,13 +33,11 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "Task{" +
+        String result = "tasks.Task{" +
                 "id='" + id +
                 "', title='" + title +
                 "', description='" + description +
                 "', status='" + status + "'}";
         return result;
     }
-
-
 }

@@ -1,7 +1,8 @@
-public class Subtask extends Task{
+package tasks;
+
+public class Subtask extends Task {
 
     protected int epicId;
-
 
 
     public Subtask(String title, String description, int epicId) {
@@ -11,7 +12,7 @@ public class Subtask extends Task{
         this.epicId = epicId;
     }
 
-    public Subtask(String title, String description, int epicId, String status){
+    public Subtask(String title, String description, int epicId, String status) {
         super(title, description);
 
         this.type = "SUBTASK";
@@ -19,8 +20,6 @@ public class Subtask extends Task{
 
         this.status = status;
     }
-
-
 
 
     public String toString() {
