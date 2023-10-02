@@ -33,10 +33,9 @@ public class Manager {
     }
 
     public void updateTask(Task task) {
-        if (!tasks.isEmpty()) {
+        if (task != null && tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
         }
-
     }
 
     public void deleteTaskById(int id) {
@@ -44,19 +43,12 @@ public class Manager {
     }
 
     public ArrayList<Task> getTasks() {
-        ArrayList<Task> tasksList = new ArrayList<>();
-        if (!tasks.isEmpty()) {
-            for (Task task : tasks.values()) {
-                tasksList.add(task);
-            }
-        }
-        return tasksList;
+        return new ArrayList<>(tasks.values());
     }
 
     public void deleteTasks() {
         tasks.clear();
     }
-
 
     public EpicTask createEpicTask(EpicTask epicTask) {
         epicTask.setId(increaseId());
@@ -65,13 +57,7 @@ public class Manager {
     }
 
     public ArrayList<EpicTask> getEpicTasks() {
-        ArrayList<EpicTask> tasksEpicList = new ArrayList<>();
-        if (!epics.isEmpty()) {
-            for (EpicTask epicTask : epics.values()) {
-                tasksEpicList.add(epicTask);
-            }
-        }
-        return tasksEpicList;
+        return new ArrayList<>(epics.values());
     }
 
     public void deleteEpicTasks() {
@@ -83,7 +69,6 @@ public class Manager {
         EpicTask epicTask = epics.get(id);
         return epicTask;
     }
-
 
     public ArrayList<Subtask> getSubtasksByEpicId(int epicId) {
         ArrayList<Subtask> subtasksList = new ArrayList<>();
@@ -106,12 +91,12 @@ public class Manager {
         }
     }
 
-
     public void updateEpic(EpicTask epicTask) {
-        epics.put(epicTask.getId(), epicTask);
-        statusUpdate(epicTask);
+        if (epicTask != null && epics.containsKey(epicTask.getId())){
+            epics.put(epicTask.getId(), epicTask);
+            statusUpdate(epicTask);
+        }
     }
-
 
     private void statusUpdate(EpicTask epicTask) {
 
@@ -142,7 +127,6 @@ public class Manager {
         }
     }
 
-
     public Subtask createSubtask(Subtask subTask) {
         if (epics.containsKey(subTask.getEpicId())) {
             subTask.setId(increaseId());
@@ -157,13 +141,7 @@ public class Manager {
     }
 
     public ArrayList<Subtask> getSubtasks() {
-        ArrayList<Subtask> subtasksList = new ArrayList<>();
-        if (!subtasks.isEmpty()) {
-            for (Subtask subtask : subtasks.values()) {
-                subtasksList.add(subtask);
-            }
-        }
-        return subtasksList;
+        return new ArrayList<>(subtasks.values());
     }
 
     public Subtask getSubtaskById(int id) {
@@ -190,12 +168,10 @@ public class Manager {
     public void updateSubtask(Subtask subtask) {
         if (subtask != null && subtasks.containsKey(subtask.getId())) {
             EpicTask epicTask = getEpicById(subtask.getEpicId());
-
             subtasks.put(subtask.getId(), subtask);
             statusUpdate(epicTask);
         }
     }
-
 
     //методы для проверки
     public void printTask() {

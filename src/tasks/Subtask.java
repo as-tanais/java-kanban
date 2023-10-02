@@ -21,7 +21,6 @@ public class Subtask extends Task {
         this.status = status;
     }
 
-
     public String toString() {
         String result = "SubTask{" +
                 "id='" + id +

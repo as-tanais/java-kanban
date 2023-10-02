@@ -3,6 +3,7 @@ package tasks;
 import java.util.ArrayList;
 
 public class EpicTask extends Task {
+
     protected ArrayList<Integer> subTaskIds = new ArrayList<Integer>();
 
     public EpicTask(String title, String description) {
@@ -11,11 +12,9 @@ public class EpicTask extends Task {
         this.status = "NEW";
     }
 
-
     public ArrayList<Integer> getSubTaskIds() {
         return subTaskIds;
     }
-
 
     public void addSubTaskIds(int subTaskId) {
         subTaskIds.add(subTaskId);
