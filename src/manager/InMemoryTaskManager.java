@@ -1,5 +1,6 @@
 package manager;
 
+import enums.Status;
 import tasks.EpicTask;
 import tasks.Subtask;
 import tasks.Task;
@@ -7,7 +8,7 @@ import tasks.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Manager {
+public class InMemoryTaskManager {
 
     private int id = 0;
     private HashMap<Integer, Task> tasks = new HashMap<>();
@@ -104,26 +105,26 @@ public class Manager {
         boolean isDone = true;
 
         if (epicTask.getSubTaskIds().isEmpty()) {
-            epicTask.setStatus("NEW");
+            epicTask.setStatus(Status.NEW);
             return;
         }
 
         for (Integer epicSubtask : epicTask.getSubTaskIds()) {
-            String status = subtasks.get(epicSubtask).getStatus();
-            if (!status.equals("NEW")) {
+            Status status = subtasks.get(epicSubtask).getStatus();
+            if (status != Status.NEW) {
                 isNew = false;
             }
-            if (!status.equals("DONE")) {
+            if (status != Status.DONE) {
                 isDone = false;
             }
         }
 
         if (isNew) {
-            epicTask.setStatus("NEW");
+            epicTask.setStatus(Status.NEW);
         } else if (isDone) {
-            epicTask.setStatus("DONE");
+            epicTask.setStatus(Status.DONE);
         } else {
-            epicTask.setStatus("IN_PROGRESS");
+            epicTask.setStatus(Status.IN_PROGRESS);
         }
     }
 

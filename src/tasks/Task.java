@@ -1,18 +1,21 @@
 package tasks;
 
+import enums.Status;
+import enums.Type;
+
 public class Task {
 
     protected String title;
     protected String description;
     protected int id;
-    protected String status;
-    protected String type;
+    protected Status status;
+    protected Type type;
 
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
-        this.status = "NEW";
-        this.type = "TASK";
+        this.status = Status.NEW;
+        this.type = Type.TASK;
     }
 
     public int getId() {
@@ -23,11 +26,11 @@ public class Task {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -1,6 +1,7 @@
 package app;
 
-import manager.Manager;
+import enums.Status;
+import manager.InMemoryTaskManager;
 import tasks.EpicTask;
 import tasks.Subtask;
 import tasks.Task;
@@ -10,58 +11,58 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Поехали!");
 
-        Manager manager = new Manager();
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
         Task taskOne = new Task("tasks.Task One", "Description of task one");
         Task taskTwo = new Task("tasks.Task Two", "Description of task Two");
 
-        manager.createTask(taskOne);
-        manager.createTask(taskTwo);
+        inMemoryTaskManager.createTask(taskOne);
+        inMemoryTaskManager.createTask(taskTwo);
 
         EpicTask epicTaskOne = new EpicTask("tasks.EpicTask 1", "Description of the tasks.EpicTask 1");
         EpicTask epicTaskTwo = new EpicTask("tasks.EpicTask 2", "Description of the tasks.EpicTask 2");
 
 
-        manager.createEpicTask(epicTaskOne);
-        manager.createEpicTask(epicTaskTwo);
+        inMemoryTaskManager.createEpicTask(epicTaskOne);
+        inMemoryTaskManager.createEpicTask(epicTaskTwo);
 
-        Subtask subTaskOne = new Subtask("SubTask 1", "Description of the subtask", manager.getEpics().get(2).getId());
-        Subtask subTaskTwo = new Subtask("SubTask 1", "Description of the subtask", manager.getEpics().get(2).getId());
-        Subtask subTaskThree = new Subtask("SubTask 1", "Description of the subtask", manager.getEpics().get(3).getId());
-
-
-        manager.createSubtask(subTaskOne);
-        manager.createSubtask(subTaskTwo);
-        manager.createSubtask(subTaskThree);
+        Subtask subTaskOne = new Subtask("SubTask 1", "Description of the subtask", inMemoryTaskManager.getEpics().get(2).getId());
+        Subtask subTaskTwo = new Subtask("SubTask 1", "Description of the subtask", inMemoryTaskManager.getEpics().get(2).getId());
+        Subtask subTaskThree = new Subtask("SubTask 1", "Description of the subtask", inMemoryTaskManager.getEpics().get(3).getId());
 
 
-        manager.printTask();
-        manager.printEpicTask();
-        manager.printSubTask();
+        inMemoryTaskManager.createSubtask(subTaskOne);
+        inMemoryTaskManager.createSubtask(subTaskTwo);
+        inMemoryTaskManager.createSubtask(subTaskThree);
 
-        System.out.println("\n");
 
-        subTaskOne.setStatus("IN_PROGRESS");
-
-        manager.updateSubtask(subTaskOne);
-
-        manager.printEpicTask();
-        manager.printSubTask();
+        inMemoryTaskManager.printTask();
+        inMemoryTaskManager.printEpicTask();
+        inMemoryTaskManager.printSubTask();
 
         System.out.println("\n");
-        subTaskThree.setStatus("DONE");
-        manager.updateSubtask(subTaskThree);
-        manager.printEpicTask();
-        manager.printSubTask();
+
+        subTaskOne.setStatus(Status.IN_PROGRESS);
+
+        inMemoryTaskManager.updateSubtask(subTaskOne);
+
+        inMemoryTaskManager.printEpicTask();
+        inMemoryTaskManager.printSubTask();
 
         System.out.println("\n");
-        manager.deleteEpicById(manager.getEpics().get(2).getId());
-        manager.deleteTasks();
+        subTaskThree.setStatus(Status.DONE);
+        inMemoryTaskManager.updateSubtask(subTaskThree);
+        inMemoryTaskManager.printEpicTask();
+        inMemoryTaskManager.printSubTask();
+
+        System.out.println("\n");
+        inMemoryTaskManager.deleteEpicById(inMemoryTaskManager.getEpics().get(2).getId());
+        inMemoryTaskManager.deleteTasks();
 
 
-        manager.printTask();
-        manager.printEpicTask();
-        manager.printSubTask();
+        inMemoryTaskManager.printTask();
+        inMemoryTaskManager.printEpicTask();
+        inMemoryTaskManager.printSubTask();
 
     }
 }

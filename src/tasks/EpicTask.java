@@ -1,5 +1,8 @@
 package tasks;
 
+import enums.Status;
+import enums.Type;
+
 import java.util.ArrayList;
 
 public class EpicTask extends Task {
@@ -8,8 +11,8 @@ public class EpicTask extends Task {
 
     public EpicTask(String title, String description) {
         super(title, description);
-        this.type = "EPIC_TASK";
-        this.status = "NEW";
+        this.type = Type.EPIC;
+        this.status = Status.NEW;
     }
 
     public ArrayList<Integer> getSubTaskIds() {
