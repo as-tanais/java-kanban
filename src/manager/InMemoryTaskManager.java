@@ -7,6 +7,7 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager{
 
@@ -14,7 +15,11 @@ public class InMemoryTaskManager implements TaskManager{
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private HashMap<Integer, EpicTask> epics = new HashMap<>();
-    private InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+    private HistoryManager historyManager;
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
 
     public HashMap<Integer, EpicTask> getEpics() {
         return epics;
@@ -116,7 +121,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
-    private void statusUpdate(EpicTask epicTask) {
+    public void statusUpdate(EpicTask epicTask) {
 
         boolean isNew = true;
         boolean isDone = true;
@@ -196,6 +201,10 @@ public class InMemoryTaskManager implements TaskManager{
             subtasks.put(subtask.getId(), subtask);
             statusUpdate(epicTask);
         }
+    }
+    @Override
+    public List<Task> getHistory(){
+        return historyManager.getHistory();
     }
 
     //методы для проверки

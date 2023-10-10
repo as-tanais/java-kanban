@@ -12,7 +12,8 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Поехали!");
 
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager(historyManager);
 
         Task taskOne = new Task("tasks.Task One", "Description of task one");
         Task taskTwo = new Task("tasks.Task Two", "Description of task Two");
