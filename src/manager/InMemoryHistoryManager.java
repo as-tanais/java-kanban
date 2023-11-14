@@ -9,7 +9,6 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     private final Map<Integer, Node<Task>> receivedTasksMap;
     private final int HISTORY_LOG_SIZE = 10;
-    private ArrayList<Task> history = new ArrayList<Task>();
     private Node<Task> head;
     private Node<Task> tail;
 
@@ -20,12 +19,8 @@ public class InMemoryHistoryManager implements HistoryManager{
     @Override
     public void add(Task task) {
         if (task != null) {
-            if (history.size() > HISTORY_LOG_SIZE) {
-                history.remove(0);
-            }
+            linkLast(task);
         }
-        history.add(task);
-
     }
 
     @Override
@@ -36,7 +31,7 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     @Override
     public List<Task> getHistory() {
-        return List.copyOf(history);
+        return getTasks();
     }
 
     private void linkLast(Task task) {
@@ -68,8 +63,6 @@ public class InMemoryHistoryManager implements HistoryManager{
         if (node != null) {
             final Node<Task> next = node.getNext();
             final Node<Task> previous = node.getPrevious();
-            node.setData(null);
-
             if (head == node && tail == node) {
                 head = null;
                 tail = null;

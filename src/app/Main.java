@@ -3,6 +3,7 @@ package app;
 import enums.Status;
 import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
+import manager.Managers;
 import tasks.EpicTask;
 import tasks.Subtask;
 import tasks.Task;
@@ -12,8 +13,10 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Поехали!");
 
-        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager(historyManager);
+        Managers manager = new Managers();
+        InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) manager.getDefaultHistory();
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) manager.getDefault();
+
 
         Task taskOne = new Task("tasks.Task One", "Description of task one");
         Task taskTwo = new Task("tasks.Task Two", "Description of task Two");
