@@ -21,6 +21,7 @@ public class InMemoryTaskManager implements TaskManager{
         this.historyManager = historyManager;
     }
 
+    @Override
     public HashMap<Integer, EpicTask> getEpics() {
         return epics;
     }
@@ -52,8 +53,8 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public void deleteTaskById(int id) {
-        tasks.remove(id);
         historyManager.remove(id);
+        tasks.remove(id);
     }
 
     @Override
@@ -63,6 +64,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public void deleteTasks() {
+        historyManager.remove(id);
         tasks.clear();
     }
 
@@ -80,6 +82,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public void deleteEpicTasks() {
+        historyManager.remove(id);
         subtasks.clear();
         epics.clear();
     }
@@ -111,6 +114,7 @@ public class InMemoryTaskManager implements TaskManager{
                 historyManager.remove(id);
                 subtasks.remove(subtaskId);
             }
+            historyManager.remove(id);
             epics.remove(id);
         }
     }
@@ -183,6 +187,7 @@ public class InMemoryTaskManager implements TaskManager{
             epicTask.getSubTaskIds().clear();
             statusUpdate(epicTask);
         }
+        historyManager.remove(id);
         subtasks.clear();
     }
 
@@ -191,6 +196,7 @@ public class InMemoryTaskManager implements TaskManager{
         if (subtasks.containsKey(id)) {
             Subtask subtask = subtasks.remove(id);
             EpicTask epicTask = epics.get(subtask.getEpicId());
+            historyManager.remove(id);
             subtasks.remove(id);
             epicTask.getSubTaskIds().remove(id);
             statusUpdate(epicTask);
@@ -211,18 +217,21 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
     //методы для проверки
+    @Override
     public void printTask() {
         for (Task task : tasks.values()) {
             System.out.println(task);
         }
     }
 
+    @Override
     public void printEpicTask() {
         for (EpicTask epicTask : epics.values()) {
             System.out.println(epicTask);
         }
     }
 
+    @Override
     public void printSubTask() {
         for (Subtask subTask : subtasks.values()) {
             System.out.println(subTask);

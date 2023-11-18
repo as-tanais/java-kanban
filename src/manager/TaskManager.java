@@ -6,6 +6,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface TaskManager {
@@ -13,21 +14,28 @@ public interface TaskManager {
     Task getTaskById(int id);
     void updateTask(Task task);
     void deleteTaskById(int id);
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
     void deleteTasks();
     EpicTask createEpicTask(EpicTask epicTask);
-    ArrayList<EpicTask> getEpicTasks();
+    List<EpicTask> getEpicTasks();
     EpicTask getEpicById(int id);
-    ArrayList<Subtask> getSubtasksByEpicId(int epicId);
+    HashMap<Integer, EpicTask> getEpics();
+    List<Subtask> getSubtasksByEpicId(int epicId);
     void deleteEpicTasks();
     void deleteEpicById(int id);
     void updateEpic(EpicTask epicTask);
     void statusUpdate(EpicTask epicTask);
     Subtask createSubtask(Subtask subTask);
-    ArrayList<Subtask> getSubtasks();
+    List<Subtask> getSubtasks();
     Subtask getSubtaskById(int id);
     void deleteSubtasks();
     void deleteSubtaskById(int id);
     void updateSubtask(Subtask subtask);
     List<Task> getHistory();
+
+    //методы для проверки
+    void printTask();
+    void printEpicTask();
+    void printSubTask();
+
 }
