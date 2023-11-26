@@ -4,10 +4,11 @@ import enums.Status;
 import enums.Type;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EpicTask extends Task {
 
-    protected ArrayList<Integer> subTaskIds = new ArrayList<Integer>();
+    protected List<Integer> subTaskIds = new ArrayList<Integer>();
 
     public EpicTask(String title, String description) {
         super(title, description);
@@ -15,7 +16,12 @@ public class EpicTask extends Task {
         this.status = Status.NEW;
     }
 
-    public ArrayList<Integer> getSubTaskIds() {
+    public EpicTask(int id, String title, String description, Status status) {
+        super(id, title, description, status);
+        this.type = Type.EPIC;
+    }
+
+    public List<Integer> getSubTaskIds() {
         return subTaskIds;
     }
 
@@ -32,5 +38,9 @@ public class EpicTask extends Task {
                 "', status='" + status +
                 "', subTaskId.size='" + subTaskIds.size() + "'}";
         return result;
+    }
+
+    public String toStringInFile () {
+        return String.format("%s,%s,%s,%s,%s", id,type,title, status, description);
     }
 }

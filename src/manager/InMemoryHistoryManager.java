@@ -9,7 +9,6 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     private final Map<Integer, Node<Task>> receivedTasksMap;
     private final int HISTORY_LOG_SIZE = 10;
-    //private ArrayList<Task> history = new ArrayList<Task>();
     private Node<Task> head;
     private Node<Task> tail;
 
@@ -67,7 +66,6 @@ public class InMemoryHistoryManager implements HistoryManager{
         if (node != null) {
             final Node<Task> next = node.getNext();
             final Node<Task> previous = node.getPrevious();
-            //node.setData(null);
 
             if (head.equals(node) && tail.equals(node)) {
                 head = null;

@@ -18,6 +18,18 @@ public class Task {
         this.type = Type.TASK;
     }
 
+    public Task(int id, String title, String description, Status status) {
+        this.title = title;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+        this.type = type.TASK;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
     public int getId() {
         return id;
     }
@@ -42,5 +54,9 @@ public class Task {
                 "', description='" + description +
                 "', status='" + status + "'}";
         return result;
+    }
+
+    public String toStringInFile () {
+        return String.format("%s,%s,%s,%s,%s", id, type,title, status, description);
     }
 }
