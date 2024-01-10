@@ -3,12 +3,14 @@ package manager;
 import enums.Node;
 import tasks.Task;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-public class InMemoryHistoryManager implements HistoryManager{
+public class InMemoryHistoryManager implements HistoryManager {
 
     private final Map<Integer, Node<Task>> receivedTasksMap;
-    private final int HISTORY_LOG_SIZE = 10;
     private Node<Task> head;
     private Node<Task> tail;
 
@@ -18,7 +20,8 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     @Override
     public void add(Task task) {
-        if (task!= null) {
+        if (task != null) {
+            int HISTORY_LOG_SIZE = 10;
             if (receivedTasksMap.size() > HISTORY_LOG_SIZE) {
                 receivedTasksMap.remove(0);
                 linkLast(task);
