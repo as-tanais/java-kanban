@@ -15,25 +15,27 @@ public class Main {
 
 
         TaskManager inMemoryTaskManager = Managers.getDefault();
-        HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
+        //HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
 //        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(inMemoryHistoryManager, new File(("src/res/backup.csv")));
 //
 //        fileBackedTasksManager.loadFromFile(new File ("src/res/backup.csv"));
 
         Task taskOne = new Task("tasks.Task One", "Description of task one");
+        Task taskTwo = new Task("tasks.Task 2", "Description of task 2");
 //        Task taskTwo = new Task("tasks.Task Two", "Description of task Two");
 //
         inMemoryTaskManager.createTask(taskOne);
+        inMemoryTaskManager.createTask(taskTwo);
 //        inMemoryTaskManager.createTask(taskTwo);
 //
 
 
-//        EpicTask epicTaskOne = new EpicTask("tasks.EpicTask 1", "Description of the tasks.EpicTask 1");
+        EpicTask epicTaskOne = new EpicTask("tasks.EpicTask 1", "Description of the tasks.EpicTask 1");
 //        EpicTask epicTaskTwo = new EpicTask("tasks.EpicTask 2", "Description of the tasks.EpicTask 2");
 //
 //
-//        inMemoryTaskManager.createEpicTask(epicTaskOne);
+        inMemoryTaskManager.createEpicTask(epicTaskOne);
 //        inMemoryTaskManager.createEpicTask(epicTaskTwo);
 
 //        Subtask subTaskOne = new Subtask("SubTask 1", "Description of the subtask", inMemoryTaskManager.getEpics().get(2).getId());
@@ -83,10 +85,18 @@ public class Main {
 //        inMemoryTaskManager.printSubTask();
 
         inMemoryTaskManager.getTaskById(1);
-        inMemoryTaskManager.getTaskById(1);
-        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getTaskById(2);
+        inMemoryTaskManager.getEpicById(3);
+//        inMemoryTaskManager.getTaskById(1);
 
-        System.out.println(inMemoryHistoryManager.getHistory().size());
+        System.out.println("\n");
+        System.out.println("\n");
+
+        System.out.println(inMemoryTaskManager.getHistory());
+
+
+
+        //System.out.println(inMemoryHistoryManager.getHistory().size());
 
     }
 }
