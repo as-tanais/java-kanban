@@ -3,12 +3,14 @@ package tasks;
 import enums.Status;
 import enums.Type;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EpicTask extends Task {
 
     protected List<Integer> subTaskIds = new ArrayList<Integer>();
+    private Instant endTime;
 
     public EpicTask(String title, String description) {
         super(title, description);
@@ -29,6 +31,17 @@ public class EpicTask extends Task {
         subTaskIds.add(subTaskId);
     }
 
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
+    }
+
+
+
+    @Override
+    public Instant getEndTime() {
+        return endTime;
+    }
+
     @Override
     public String toString() {
         String result = "tasks.EpicTask{" +
@@ -36,7 +49,11 @@ public class EpicTask extends Task {
                 "', title='" + title +
                 "', description='" + description +
                 "', status='" + status +
-                "', subTaskId.size='" + subTaskIds.size() + "'}";
+                "', startTime='" + FORMATTER.format(getStartTime()) +
+                "', duration='" + getDuration() +
+                "', endTime='" + FORMATTER.format(getEndTime()) +
+                "', subTaskId.size='" + subTaskIds.size() +
+                "'}";
         return result;
     }
 

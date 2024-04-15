@@ -1,7 +1,7 @@
 package manager;
 
 import tasks.EpicTask;
-import tasks.Subtask;
+import tasks.SubTask;
 import tasks.Task;
 
 import java.util.HashMap;
@@ -24,19 +24,19 @@ public interface TaskManager {
     int getId();
 
     HashMap<Integer, EpicTask> getEpics();
-    List<Subtask> getSubtasksByEpicId(int epicId);
+    List<SubTask> getSubtasksByEpicId(int epicId);
     void deleteEpicTasks();
     void deleteEpicById(int id);
     void updateEpic(EpicTask epicTask);
     void statusUpdate(EpicTask epicTask);
-    Subtask createSubtask(Subtask subTask);
-    List<Subtask> getSubtasks();
-    Subtask getSubtaskById(int id);
+    SubTask createSubtask(SubTask subTask);
+    List<SubTask> getSubtasks();
+    SubTask getSubtaskById(int id);
     void deleteSubtasks();
     void deleteSubtaskById(int id);
-    void updateSubtask(Subtask subtask);
+    void updateSubtask(SubTask subtask);
     List<Task> getHistory();
-
+    public List<Task> getPrioritizedTasks();
     //методы для проверки
     void printTask();
     void printEpicTask();
