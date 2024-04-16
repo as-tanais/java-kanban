@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 public class InMemoryTaskManager implements TaskManager {
 
     protected int id;
-    public HashMap<Integer, Task> tasks = new HashMap<>();
-    public HashMap<Integer, SubTask> subtasks = new HashMap<>();
-    public HashMap<Integer, EpicTask> epics = new HashMap<>();
+    public Map<Integer, Task> tasks = new HashMap<>();
+    public Map<Integer, SubTask> subtasks = new HashMap<>();
+    public Map<Integer, EpicTask> epics = new HashMap<>();
     private InMemoryHistoryManager historyManager;
     protected Set<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
@@ -41,7 +41,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HashMap<Integer, EpicTask> getEpics() {
+    public Map<Integer, EpicTask> getEpics() {
         return epics;
     }
 
@@ -312,7 +312,6 @@ public class InMemoryTaskManager implements TaskManager {
         return isValid;
     }
 
-    //getPrioritizedTasks
     //методы для проверки
     @Override
     public void printTask() {
