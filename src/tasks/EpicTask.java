@@ -36,7 +36,6 @@ public class EpicTask extends Task {
     }
 
 
-
     @Override
     public Instant getEndTime() {
         return endTime;
@@ -57,7 +56,7 @@ public class EpicTask extends Task {
         return result;
     }
 
-    public String toStringInFile () {
-        return String.format("%s,%s,%s,%s,%s", id,type,title, status, description);
+    public String toStringInFile() {
+        return String.format("%s,%s,%s,%s,%s", id, type, title, status, description);
     }
 }

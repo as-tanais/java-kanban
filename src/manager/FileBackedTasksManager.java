@@ -42,22 +42,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         EpicTask epicTask2 = new EpicTask("EpicTask 2", "EpicTask Description 2");
 
 
-
         fileBackedTaskManagerFirst.createEpicTask(epicTask1);
         fileBackedTaskManagerFirst.createEpicTask(epicTask2);
 
-        SubTask subtask1 = new SubTask("Sub 1", "Sub des 1",  Instant.now().plusSeconds(300), 5,4);
+        SubTask subtask1 = new SubTask("Sub 1", "Sub des 1", Instant.now().plusSeconds(300), 5, 4);
 
         fileBackedTaskManagerFirst.createSubtask(subtask1);
 
-        SubTask subtask2 = new SubTask("Sub 1", "Sub des 1",  Instant.now().plusSeconds(600), 5,4);
+        SubTask subtask2 = new SubTask("Sub 1", "Sub des 1", Instant.now().plusSeconds(600), 5, 4);
 
         fileBackedTaskManagerFirst.createSubtask(subtask2);
-
-        System.out.println(subtask1);
-        System.out.println(subtask2);
-        System.out.println(epicTask1);
-
     }
 
     private void save() {
@@ -77,7 +71,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             for (EpicTask epicTask : epicTasks) {
                 if (epicTask.getStartTime() != null) {
                     writer.write(String.format("%s\n", epicTask.toStringInFilePriority()));
-                }else {
+                } else {
                     writer.write(String.format("%s\n", epicTask.toStringInFile()));
                 }
             }
@@ -86,7 +80,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             for (SubTask subTask : subTasks) {
                 if (subTask.getStartTime() != null) {
                     writer.write(String.format("%s\n", subTask.toStringInFilePriority()));
-                }else {
+                } else {
                     writer.write(String.format("%s\n", subTask.toStringInFile()));
                 }
             }
@@ -137,7 +131,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             if (isPriorityTask) {
                 return new SubTask(id, title, description, status, epicId);
             } else {
-                return new SubTask(id, title, description, status, startTime,duration, epicId);
+                return new SubTask(id, title, description, status, startTime, duration, epicId);
             }
         } else {
             return new EpicTask(id, title, description, status);
@@ -215,13 +209,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return fileBackedTasksManager;
     }
 
-    private static Task findTask(int id, FileBackedTasksManager manager){
+    private static Task findTask(int id, FileBackedTasksManager manager) {
 
-        if (manager.tasks.containsKey(id)){
+        if (manager.tasks.containsKey(id)) {
             return manager.getTaskById(id);
-        }else if (manager.epics.containsKey(id)){
+        } else if (manager.epics.containsKey(id)) {
             return manager.getEpicById(id);
-        }else {
+        } else {
             return manager.getSubtaskById(id);
         }
 

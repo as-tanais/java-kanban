@@ -36,7 +36,7 @@ public class Task {
         this.type = type.TASK;
     }
 
-    public Task(String title, String description, Instant startTime, int dur){
+    public Task(String title, String description, Instant startTime, int dur) {
         this.title = title;
         this.description = description;
         this.type = type.TASK;
@@ -75,7 +75,7 @@ public class Task {
         this.status = status;
     }
 
-    public Instant getEndTime(){
+    public Instant getEndTime() {
         return this.startTime.plus(this.duration);
     }
 
@@ -101,7 +101,7 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "tasks.Task{" +
+        return "tasks.Task{" +
                 "id='" + id +
                 "', title='" + title +
                 "', description='" + description +
@@ -110,15 +110,14 @@ public class Task {
                 "', duration='" + duration +
                 "', endTime='" + FORMATTER.format(getEndTime()) +
                 "'}";
-        return result;
     }
 
-    public String toStringInFile () {
-        return String.format("%s,%s,%s,%s,%s", id, type,title, status, description);
+    public String toStringInFile() {
+        return String.format("%s,%s,%s,%s,%s", id, type, title, status, description);
     }
 
     public String toStringInFilePriority() {
-        return String.format("%s,%s,%s,%s,%s,%s,%s", id, type,title, status, description, startTime, duration.toMinutes());
+        return String.format("%s,%s,%s,%s,%s,%s,%s", id, type, title, status, description, startTime, duration.toMinutes());
     }
 
     @Override
@@ -133,7 +132,7 @@ public class Task {
 
         Task task = (Task) obj;
 
-        return  id == task.id
+        return id == task.id
                 && Objects.equals(this.title, task.title)
                 && Objects.equals(this.description, task.description)
                 && Objects.equals(this.startTime, task.startTime);

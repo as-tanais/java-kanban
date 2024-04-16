@@ -20,7 +20,7 @@ public class InMemoryHistoryManagerTest {
 
 
     @BeforeEach
-    public void createManager(){
+    public void createManager() {
         manager = Managers.getDefaultHistory();
     }
 
@@ -47,7 +47,7 @@ public class InMemoryHistoryManagerTest {
 
         EpicTask epicTaskOne = new EpicTask(3, "EpicTask title 1", "Task1", Status.NEW);
 
-        SubTask subTaskOne = new SubTask(4, "SubTask title 1", "Task1", Status.NEW, Instant.EPOCH, 0,3);
+        SubTask subTaskOne = new SubTask(4, "SubTask title 1", "Task1", Status.NEW, Instant.EPOCH, 0, 3);
 
         manager.add(taskOne);
         manager.add(taskTwo);
@@ -57,7 +57,7 @@ public class InMemoryHistoryManagerTest {
 
         manager.remove(1);
 
-        assertEquals(List.of(taskTwo,epicTaskOne,subTaskOne), manager.getHistory());
+        assertEquals(List.of(taskTwo, epicTaskOne, subTaskOne), manager.getHistory());
         assertNotNull(manager.getHistory());
         assertEquals(3, manager.getHistory().size());
     }

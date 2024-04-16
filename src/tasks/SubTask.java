@@ -23,7 +23,7 @@ public class SubTask extends Task {
         this.status = status;
     }
 
-    public SubTask(int id, String title, String description, Status status, int epicId){
+    public SubTask(int id, String title, String description, Status status, int epicId) {
         super(id, title, description, status);
         this.epicId = epicId;
         this.type = Type.SUBTASK;
@@ -36,7 +36,7 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
-    public SubTask(int id, String title, String description, Status status, Instant startTime, int dur, int epicId){
+    public SubTask(int id, String title, String description, Status status, Instant startTime, int dur, int epicId) {
         super(id, title, description, status, startTime, dur);
         this.epicId = epicId;
         this.type = Type.SUBTASK;
@@ -56,12 +56,12 @@ public class SubTask extends Task {
         return result;
     }
 
-    public String toStringInFile () {
-        return String.format("%s,%s,%s,%s,%s,%s", id, type,title, status, description, getEpicId());
+    public String toStringInFile() {
+        return String.format("%s,%s,%s,%s,%s,%s", id, type, title, status, description, getEpicId());
     }
 
-    public String toStringInFilePriority () {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s", id, type,title, status, description, getEpicId(),startTime,duration.toMinutes());
+    public String toStringInFilePriority() {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s", id, type, title, status, description, getEpicId(), startTime, duration.toMinutes());
     }
 
     public int getEpicId() {

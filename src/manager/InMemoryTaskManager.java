@@ -133,11 +133,6 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         return subtasksList;
-//        subtasksList = epics.entrySet().stream()
-//                .filter(e -> e.getKey().equals(epicId))
-//                .map(Map.Entry::getValue)
-//                .collect(Collectors.toList());
-//        return subtasksList;
     }
 
     @Override
