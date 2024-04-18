@@ -61,7 +61,7 @@ public class SubTask extends Task {
     }
 
     public String toStringInFilePriority() {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s", id, type, title, status, description, getEpicId(), startTime, duration.toMinutes());
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s", id, type, title, status, description, startTime, duration.toMinutes(), getEpicId());
     }
 
     public int getEpicId() {

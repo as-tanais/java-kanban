@@ -28,7 +28,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         InMemoryHistoryManager historyManager = Managers.getDefaultHistory();
-        FileBackedTasksManager fileBackedTaskManagerFirst = new FileBackedTasksManager(historyManager, new File(("src/res/backup.csv")));
+        FileBackedTasksManager fileBackedTaskManagerFirst = new FileBackedTasksManager(historyManager, new File("src/res/backup.csv"));
 
         Task task1 = new Task("Task 1", "Task Description 1");
         fileBackedTaskManagerFirst.createTask(task1);
@@ -49,14 +49,31 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         fileBackedTaskManagerFirst.createSubtask(subtask1);
 
-        SubTask subtask2 = new SubTask("Sub 1", "Sub des 1", Instant.now().plusSeconds(600), 5, 4);
 
-        fileBackedTaskManagerFirst.createSubtask(subtask2);
+
+        fileBackedTaskManagerFirst.getTaskById(1);
+        fileBackedTaskManagerFirst.getTaskById(2);
+        System.out.println(fileBackedTaskManagerFirst.getHistory().size());
+
+////        SubTask subtask2 = new SubTask("Sub 1", "Sub des 1", Instant.now().plusSeconds(600), 5, 4);
+////
+////        fileBackedTaskManagerFirst.createSubtask(subtask2);
+//
+//        // fileBackedTaskManagerFirst.getTaskById(1);
+//
+        FileBackedTasksManager fileBackedTasksManagerS = loadFromFile(new File("src/res/backup.csv"));
+        System.out.println(fileBackedTasksManagerS.getHistory().size());
+////        System.out.println(fileBackedTasksManagerS.getSubtasksByEpicId(4).size());
+////        System.out.println(fileBackedTasksManagerS.subtasks.size());
+////        System.out.println(fileBackedTasksManagerS.subtasks.get(6));
+////        System.out.println(fileBackedTasksManagerS.epics.get(4));
+////        System.out.println(fileBackedTasksManager.getSubtasks().size());
+////        System.out.println(fileBackedTasksManager.getSubtaskById(6).getEpicId());
     }
 
     private void save() {
         try (Writer writer = new FileWriter(file)) {
-            writer.write("id,type,name,status,description,epic,start_time,duration\n");
+            writer.write("id,type,name,status,description,start_time,duration,epic\n");
 
             List<Task> tasks = super.getTasks();
             for (Task task : tasks) {
@@ -87,8 +104,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
             writer.write("\n");
 
-
             writer.write(historyToString(this.getHistoryManager()));
+
 
 
         } catch (IOException e) {
@@ -114,9 +131,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         status = Status.valueOf(backupTaks[3]);
         description = String.valueOf(backupTaks[4]);
 
-        if (backupTaks[6] != null) {
-            startTime = Instant.parse(String.valueOf(backupTaks[6]));
-            duration = Integer.parseInt((String.valueOf(backupTaks[7])));
+        if (backupTaks.length > 6) {
+            startTime = Instant.parse(String.valueOf(backupTaks[5]));
+            duration = Integer.parseInt((String.valueOf(backupTaks[6])));
             isPriorityTask = true;
         }
 
@@ -127,11 +144,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 return new Task(id, title, description, status);
             }
         } else if (type == Type.SUBTASK) {
-            int epicId = Integer.parseInt(backupTaks[5]);
+            int epicId = Integer.parseInt(backupTaks[backupTaks.length - 1]);
             if (isPriorityTask) {
-                return new SubTask(id, title, description, status, epicId);
-            } else {
                 return new SubTask(id, title, description, status, startTime, duration, epicId);
+            } else {
+                return new SubTask(id, title, description, status, epicId);
             }
         } else {
             return new EpicTask(id, title, description, status);
@@ -190,17 +207,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         break;
                     case SUBTASK:
                         fileBackedTasksManager.subtasks.put(backupId, (SubTask) task);
+                        fileBackedTasksManager.epics.get(((SubTask) task).getEpicId()).getSubTaskIds().add(backupId);
+                        if (task.getStartTime() != null) {
+                            fileBackedTasksManager.updateTimeEpic(fileBackedTasksManager.epics.get(((SubTask) task).getEpicId()));
+                        }
                         break;
                 }
 
             }
             String history = lines[lines.length - 1];
-            List<Integer> list = historyFromString(history);
-            if (!list.isEmpty()) {
-                for (int id : list) {
-                    historyManager.add(findTask(id, fileBackedTasksManager));
+            if (!history.equals("")) {
+                List<Integer> list = historyFromString(history);
+                if (!list.isEmpty()) {
+                    for (int id : list) {
+                        historyManager.add(findTask(id, fileBackedTasksManager));
+                    }
                 }
             }
+
 
         } catch (IOException e) {
             throw new ManagerSaveException("File not loaded");
@@ -212,11 +236,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private static Task findTask(int id, FileBackedTasksManager manager) {
 
         if (manager.tasks.containsKey(id)) {
-            return manager.getTaskById(id);
+            return manager.tasks.get(id);
         } else if (manager.epics.containsKey(id)) {
-            return manager.getEpicById(id);
+            return manager.epics.get(id);
         } else {
-            return manager.getSubtaskById(id);
+            return manager.subtasks.get(id);
         }
 
     }
@@ -238,7 +262,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public SubTask createSubtask(SubTask subtask) {
         SubTask subTask = super.createSubtask(subtask);
-//        super.createSubtask(subtask);
         save();
         return subtask;
     }
