@@ -41,34 +41,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         EpicTask epicTask1 = new EpicTask("EpicTask 1", "EpicTask Description 1");
         EpicTask epicTask2 = new EpicTask("EpicTask 2", "EpicTask Description 2");
 
-
         fileBackedTaskManagerFirst.createEpicTask(epicTask1);
         fileBackedTaskManagerFirst.createEpicTask(epicTask2);
 
         SubTask subtask1 = new SubTask("Sub 1", "Sub des 1", Instant.now().plusSeconds(300), 5, 4);
-
         fileBackedTaskManagerFirst.createSubtask(subtask1);
 
-
-
-        fileBackedTaskManagerFirst.getTaskById(1);
-        fileBackedTaskManagerFirst.getTaskById(2);
-        System.out.println(fileBackedTaskManagerFirst.getHistory().size());
-
-////        SubTask subtask2 = new SubTask("Sub 1", "Sub des 1", Instant.now().plusSeconds(600), 5, 4);
-////
-////        fileBackedTaskManagerFirst.createSubtask(subtask2);
-//
-//        // fileBackedTaskManagerFirst.getTaskById(1);
-//
-        FileBackedTasksManager fileBackedTasksManagerS = loadFromFile(new File("src/res/backup.csv"));
-        System.out.println(fileBackedTasksManagerS.getHistory().size());
-////        System.out.println(fileBackedTasksManagerS.getSubtasksByEpicId(4).size());
-////        System.out.println(fileBackedTasksManagerS.subtasks.size());
-////        System.out.println(fileBackedTasksManagerS.subtasks.get(6));
-////        System.out.println(fileBackedTasksManagerS.epics.get(4));
-////        System.out.println(fileBackedTasksManager.getSubtasks().size());
-////        System.out.println(fileBackedTasksManager.getSubtaskById(6).getEpicId());
     }
 
     private void save() {

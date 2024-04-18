@@ -1,7 +1,6 @@
 import exception.ManagerSaveException;
 import manager.FileBackedTasksManager;
 import manager.InMemoryHistoryManager;
-import manager.InMemoryTaskManager;
 import manager.Managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import tasks.Task;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
