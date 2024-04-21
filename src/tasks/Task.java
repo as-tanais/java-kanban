@@ -101,15 +101,25 @@ public class Task {
 
     @Override
     public String toString() {
-        return "tasks.Task{" +
-                "id='" + id +
-                "', title='" + title +
-                "', description='" + description +
-                "', status='" + status +
-                "', startTime='" + FORMATTER.format(startTime) +
-                "', duration='" + duration +
-                "', endTime='" + FORMATTER.format(getEndTime()) +
-                "'}";
+        String result =
+                "Task{" +
+                        "id='" + id +
+                        "', title='" + title +
+                        "', description='" + description +
+                        "', status='" + status;
+
+        if (getStartTime() != null) {
+            result = result +
+                    "', startTime='" + FORMATTER.format(startTime) +
+                    "', duration='" + duration +
+                    "', endTime='" + FORMATTER.format(getEndTime()) +
+                    "'}";
+        } else {
+            result = result + "'}";
+        }
+
+
+        return result;
     }
 
     public String toStringInFile() {

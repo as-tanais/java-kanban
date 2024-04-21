@@ -292,7 +292,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public List<Task> getPrioritizedTasks() {
-        return prioritizedTasks.stream().toList();
+        return new ArrayList<>(prioritizedTasks);
+//        return getTasks();
     }
 
     private boolean isValidatePriorityTasks(Task task) {
