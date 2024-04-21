@@ -7,6 +7,9 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import manager.Managers;
 import manager.TaskManager;
+import servers.handlers.EpicsHandler;
+import servers.handlers.TasksHandler;
+import tasks.EpicTask;
 import tasks.Task;
 
 import java.io.IOException;
@@ -24,18 +27,18 @@ public class HttpTaskServer {
     private static final int PORT = 8080;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private final HttpServer server;
-    private final TaskManager manager;
+    private static TaskManager manager;
 
     Gson gson = new GsonBuilder()
             //.registerTypeAdapter(LocalDateTime.class, new LocalDatetimeAdpter())
             .setPrettyPrinting()
             .create();
 
-    public HttpTaskServer(TaskManager manager) throws IOException {
+    public HttpTaskServer() throws IOException {
+        manager = Managers.getDefault();
         server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        server.createContext("/tasks", new TasksHandler());
-        //server.createContext("/epics", new EpicTasksHandler());
-        this.manager = manager;
+        server.createContext("/tasks", new TasksHandler(manager));
+        server.createContext("/epics", new EpicsHandler(manager));
     }
 
     public void startServer() {
@@ -43,100 +46,126 @@ public class HttpTaskServer {
         System.out.println("HTTP-server started");
     }
 
+
+//    public void handelGetTasks (HttpExchange exchange) throws IOException {
+//        System.out.println("tost");
+//
+//        System.out.println(manager.getTasks());
+//        Gson gson1 = new Gson();
+//        String response = gson1.toJson(manager.getTasks());
+//
+//
+//        System.out.println(response);
+//
+//        writeResponse(exchange, response, 200);
+//    }
+
     public static void main(String[] args) throws IOException {
-        TaskManager inMemoryTaskManager = Managers.getDefault();
-        HttpTaskServer httpTaskServer = new HttpTaskServer(inMemoryTaskManager);
+//        TaskManager inMemoryTaskManager = Managers.getDefault();
+        HttpTaskServer httpTaskServer = new HttpTaskServer();
         Task taskOne = new Task("Task 1", "Description of task 1", Instant.now().plusSeconds(1200), 5);
         Task taskTwo = new Task("Task 2", "Description of task 2");
 
-        inMemoryTaskManager.createTask(taskOne);
-        inMemoryTaskManager.createTask(taskTwo);
+        EpicTask epicTaskOne = new EpicTask("Epic 1", "Des epic 1");
+
+        manager.createTask(taskOne);
+        manager.createTask(taskTwo);
+        manager.createEpicTask(epicTaskOne);
         httpTaskServer.startServer();
     }
 
-    class TasksHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange exchange) throws IOException {
-            String method = exchange.getRequestMethod();
-            switch (method) {
-                case ("GET"): {
-                    handelTasks(exchange);
-                    break;
-                }
-                default:
-                    writeResponse(exchange, "endpoint not found", 404);
-            }
+
+    private void writeResponse(HttpExchange exchange,
+                               String responseString,
+                               int responseCode) throws IOException {
+        try (OutputStream os = exchange.getResponseBody()) {
+            exchange.sendResponseHeaders(responseCode, 0);
+            os.write(responseString.getBytes(DEFAULT_CHARSET));
         }
-
-//        private Endpoint getEndpoint(String requestPath, String requestMethod) {
-//            String[] pathParts = requestPath.split("/");
-//            if (pathParts.length == 2 && pathParts[1].equals("tasks")) {
-//                return Endpoint.GET_TASKS;
-//            } else
-//                return Endpoint.UNKNOWN;
-//        }
-
-        private void writeResponse(HttpExchange exchange,
-                                   String responseString,
-                                   int responseCode) throws IOException {
-            try (OutputStream os = exchange.getResponseBody()) {
-                exchange.sendResponseHeaders(responseCode, 0);
-                os.write(responseString.getBytes(DEFAULT_CHARSET));
-            }
-            exchange.close();
-        }
-        private void handelTasks(HttpExchange exchange) throws IOException {
-//            Optional<Integer> postIdOpt = getTaskId(exchange);
-//            if(postIdOpt.isEmpty()) {
-//                writeResponse(exchange, "Wrong Task ID", 400);
-//                return;
-//            }
-//            int postId = postIdOpt.get();
-            String response;
-            System.out.println(exchange);
-            String[] pathParts = exchange.getRequestURI().getPath().split("/");
-//            System.out.println(exchange);
-//            System.out.println(pathParts.length);
-////            System.out.println(pathParts[0]);
-////            System.out.println(pathParts[1]);
-//            System.out.println(pathParts[2]);
-
-            String param = exchange.getRequestURI().getQuery();
-            InputStream inputStream = exchange.getRequestBody();
-            String bodyS = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-            System.out.println(param);
-
-            if (pathParts.length == 3) {
-//                System.out.println("aga");
-//                System.out.println(pathParts[2]);
-                int id = Integer.parseInt(pathParts[2]);
-
-                    String r = gson.toJson(manager.getTaskById(id));
-                    writeResponse(exchange, r, 200);
-
-
-            }
-            if (pathParts.length == 2) {
-
-                response = gson.toJson(manager.getTasks());
-                    System.out.println("tut");
-                    writeResponse(exchange, response, 200);
-
-            }
-
-
-        }
-
-        private Optional<Integer> getTaskId(HttpExchange exchange) {
-            String[] pathParts = exchange.getRequestURI().getPath().split("/");
-            try {
-                return Optional.of(Integer.parseInt(pathParts[2]));
-            } catch (NumberFormatException exception) {
-                return Optional.empty();
-            }
-        }
-
+        exchange.close();
     }
+
+//    class TasksHandler implements HttpHandler {
+//        @Override
+//        public void handle(HttpExchange exchange) throws IOException {
+//            String method = exchange.getRequestMethod();
+//            switch (method) {
+//                case ("GET"): {
+//                    handelTasks(exchange);
+//                    break;
+//                }
+//                default:
+//                    writeResponse(exchange, "endpoint not found", 404);
+//            }
+//        }
+//
+////        private Endpoint getEndpoint(String requestPath, String requestMethod) {
+////            String[] pathParts = requestPath.split("/");
+////            if (pathParts.length == 2 && pathParts[1].equals("tasks")) {
+////                return Endpoint.GET_TASKS;
+////            } else
+////                return Endpoint.UNKNOWN;
+////        }
+//
+//        private void writeResponse(HttpExchange exchange,
+//                                   String responseString,
+//                                   int responseCode) throws IOException {
+//            try (OutputStream os = exchange.getResponseBody()) {
+//                exchange.sendResponseHeaders(responseCode, 0);
+//                os.write(responseString.getBytes(DEFAULT_CHARSET));
+//            }
+//            exchange.close();
+//        }
+//
+//        private void handelTasks(HttpExchange exchange) throws IOException {
+////            Optional<Integer> postIdOpt = getTaskId(exchange);
+////            if(postIdOpt.isEmpty()) {
+////                writeResponse(exchange, "Wrong Task ID", 400);
+////                return;
+////            }
+////            int postId = postIdOpt.get();
+//            String response;
+//            System.out.println(exchange);
+//            String[] pathParts = exchange.getRequestURI().getPath().split("/");
+////            System.out.println(exchange);
+////            System.out.println(pathParts.length);
+//////            System.out.println(pathParts[0]);
+//////            System.out.println(pathParts[1]);
+////            System.out.println(pathParts[2]);
+//
+//            String param = exchange.getRequestURI().getQuery();
+//            InputStream inputStream = exchange.getRequestBody();
+//            String bodyS = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+//            System.out.println(param);
+//
+//            if (pathParts.length == 3) {
+//                int id = Integer.parseInt(pathParts[2]);
+//                String r = gson.toJson(manager.getTaskById(id));
+//                writeResponse(exchange, r, 200);
+//
+//
+//            }
+//            if (pathParts.length == 2) {
+//
+//                response = gson.toJson(manager.getTasks());
+//                System.out.println("tut");
+//                writeResponse(exchange, response, 200);
+//
+//            }
+//
+//
+//        }
+//
+//        private Optional<Integer> getTaskId(HttpExchange exchange) {
+//            String[] pathParts = exchange.getRequestURI().getPath().split("/");
+//            try {
+//                return Optional.of(Integer.parseInt(pathParts[2]));
+//            } catch (NumberFormatException exception) {
+//                return Optional.empty();
+//            }
+//        }
+//
+//    }
 
 
 }

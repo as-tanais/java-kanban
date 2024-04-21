@@ -47,11 +47,14 @@ public class EpicTask extends Task {
                 "id='" + id +
                 "', title='" + title +
                 "', description='" + description +
-                "', status='" + status +
-                "', startTime='" + FORMATTER.format(getStartTime()) +
-                "', duration='" + getDuration() +
-                "', endTime='" + FORMATTER.format(getEndTime()) +
-                "', subTaskId.size='" + subTaskIds.size() +
+                "', status='" + status;
+
+        if (getStartTime() != null) {
+            result = result +"', startTime='" + FORMATTER.format(getStartTime()) +
+                    "', duration='" + getDuration() +
+                    "', endTime='" + FORMATTER.format(getEndTime());
+        }
+        result = result + "', subTaskId.size='" + subTaskIds.size() +
                 "'}";
         return result;
     }
