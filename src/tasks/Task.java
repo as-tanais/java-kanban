@@ -67,6 +67,10 @@ public class Task {
         this.id = id;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -110,15 +114,14 @@ public class Task {
 
         if (getStartTime() != null) {
             result = result +
-                    "', startTime='" + FORMATTER.format(startTime) +
+                    "', startTime='" + startTime +
                     "', duration='" + duration +
-                    "', endTime='" + FORMATTER.format(getEndTime()) +
-                    "'}";
+                    "', endTime='" + getEndTime();
         } else {
-            result = result + "'}";
+
         }
 
-
+        result = result + "'}";
         return result;
     }
 

@@ -4,14 +4,14 @@ import com.sun.net.httpserver.HttpExchange;
 import exception.IntersectionException;
 import manager.TaskManager;
 import servers.Endpoint;
-import tasks.EpicTask;
+import tasks.SubTask;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class EpicsHandler extends TasksHandler {
+public class SubTaksHandler extends TasksHandler {
 
-    public EpicsHandler(TaskManager manager) {
+    public SubTaksHandler(TaskManager manager) {
         super(manager);
     }
 
@@ -21,23 +21,23 @@ public class EpicsHandler extends TasksHandler {
 
         switch (endpoint) {
             case GET_TASKS: {
-                getEpicsTaskHandle(exchange);
+                getSubTasksHandle(exchange);
                 break;
             }
             case GET_TASK_ID: {
-                getEpicByIdHandle(exchange);
+                getSubTaskByIdHandle(exchange);
                 break;
             }
             case POST_TASK: {
-                createEpicHandle(exchange);
+                createSubTaskHandle(exchange);
                 break;
             }
             case POST_TASK_ID: {
-                updateEpicHandle(exchange);
+                updateSubTaskHandle(exchange);
                 break;
             }
             case DELETE_TASK: {
-                deleteEpicByIdHandle(exchange);
+                deleteSubTaskByIdHandle(exchange);
                 break;
             }
             case UNKNOWN: {
@@ -47,7 +47,7 @@ public class EpicsHandler extends TasksHandler {
         }
     }
 
-    private void deleteEpicByIdHandle(HttpExchange exchange) throws IOException {
+    private void deleteSubTaskByIdHandle(HttpExchange exchange) throws IOException {
         Optional<Integer> taskIdOpt = getTaskId(exchange);
 
         if (taskIdOpt.isEmpty()) {
@@ -55,26 +55,11 @@ public class EpicsHandler extends TasksHandler {
             return;
         }
         int taskId = taskIdOpt.get();
-
-
-        manager.deleteEpicById(taskId);
-
+        manager.deleteSubtaskById(taskId);
         writeResponse(exchange, "Задача удалена", 200);
     }
 
-    private void createEpicHandle(HttpExchange exchange) throws IOException {
-        String data = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
-        EpicTask task = gson.fromJson(data, EpicTask.class);
-        try {
-            manager.createEpicTask(task);
-            writeResponse(exchange, "Task created", 201);
-        } catch (IntersectionException e) {
-            writeResponse(exchange, "Task time cross", 406);
-        }
-    }
-
-    private void updateEpicHandle(HttpExchange exchange) throws IOException {
-
+    private void updateSubTaskHandle(HttpExchange exchange) throws IOException {
         Optional<Integer> taskIdOpt = getTaskId(exchange);
 
         if (taskIdOpt.isEmpty()) {
@@ -86,23 +71,28 @@ public class EpicsHandler extends TasksHandler {
         if (manager.getEpicById(taskId) != null) {
 
             String data = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
-            EpicTask task = gson.fromJson(data, EpicTask.class);
+            SubTask task = gson.fromJson(data, SubTask.class);
 
-            manager.updateEpic(task);
+            manager.updateSubtask(task);
             writeResponse(exchange, "Task update", 200);
 
         } else {
             writeResponse(exchange, "Задача с id " + taskId + " не найдена", 404);
         }
-
     }
 
-    private void getEpicsTaskHandle(HttpExchange exchange) throws IOException {
-        String response = gson.toJson(manager.getEpicTasks());
-        writeResponse(exchange, response, 200);
+    private void createSubTaskHandle(HttpExchange exchange) throws IOException {
+        String data = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+        SubTask task = gson.fromJson(data, SubTask.class);
+        try {
+            manager.createSubtask(task);
+            writeResponse(exchange, "Task created", 201);
+        } catch (IntersectionException e) {
+            writeResponse(exchange, "Task time cross", 406);
+        }
     }
 
-    private void getEpicByIdHandle(HttpExchange exchange) throws IOException {
+    private void getSubTaskByIdHandle(HttpExchange exchange) throws IOException {
         Optional<Integer> taskIdOpt = getTaskId(exchange);
         String response;
         int resCode;
@@ -111,7 +101,7 @@ public class EpicsHandler extends TasksHandler {
             return;
         }
         int taskId = taskIdOpt.get();
-        EpicTask task = manager.getEpicById(taskId);
+        SubTask task = manager.getSubtaskById(taskId);
 
         if (task == null) {
             response = "Задача с id " + taskId + " не найдена";
@@ -123,9 +113,8 @@ public class EpicsHandler extends TasksHandler {
         writeResponse(exchange, response, resCode);
     }
 
-
-    @Override
-    protected Endpoint getEndpoint(String requestPath, String requestMethod) {
-        return super.getEndpoint(requestPath, requestMethod);
+    private void getSubTasksHandle(HttpExchange exchange) throws IOException {
+        String response = gson.toJson(manager.getSubtasks());
+        writeResponse(exchange, response, 200);
     }
 }

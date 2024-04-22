@@ -47,12 +47,14 @@ public class SubTask extends Task {
                 "id='" + id +
                 "', title='" + title +
                 "', description='" + description +
-                "', status='" + status +
-                "', startTime='" + FORMATTER.format(startTime) +
-                "', duration='" + duration +
-                "', endTime='" + FORMATTER.format(getEndTime()) +
-                "', epic task ID " + epicId +
-                "'}";
+                "', status='" + status;
+        if (startTime != null){
+            result = result + "', startTime='" + FORMATTER.format(startTime) +
+                    "', duration='" + duration +
+                    "', endTime='" + FORMATTER.format(getEndTime()) +
+                    "', epic task ID " + epicId;
+        }
+        result = result + "'}";
         return result;
     }
 

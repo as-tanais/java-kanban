@@ -43,7 +43,7 @@ public class EpicTask extends Task {
 
     @Override
     public String toString() {
-        String result = "tasks.EpicTask{" +
+        String result = "EpicTask{" +
                 "id='" + id +
                 "', title='" + title +
                 "', description='" + description +

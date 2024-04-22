@@ -1,6 +1,7 @@
 package manager;
 
 import enums.Status;
+import enums.Type;
 import exception.IntersectionException;
 import tasks.EpicTask;
 import tasks.SubTask;
@@ -43,7 +44,7 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(epics.values());
     }
 
-    private int increaseId() {
+    public int increaseId() {
         return ++id;
     }
 
@@ -60,7 +61,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int id) {
         Task task = tasks.get(id);
-        historyManager.add(task);
+        if (task != null) {
+            historyManager.add(task);
+        }
         return task;
     }
 
@@ -73,6 +76,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById(int id) {
+        if (isPriorityTask(getTaskById(id))) {
+            prioritizedTasks.remove(getTaskById(id));
+        }
         historyManager.remove(id);
         tasks.remove(id);
     }
@@ -138,7 +144,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epics.containsKey(id)) {
             EpicTask epicTask = epics.get(id);
             for (Integer subtaskId : epicTask.getSubTaskIds()) {
-                historyManager.remove(id);
+                historyManager.remove(subtaskId);
                 subtasks.remove(subtaskId);
             }
             historyManager.remove(id);
@@ -247,7 +253,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subtask != null && subtasks.containsKey(subtask.getId())) {
             EpicTask epicTask = getEpicById(subtask.getEpicId());
             subtasks.put(subtask.getId(), subtask);
-            if (isPriorityTask(subtask)){
+            if (isPriorityTask(subtask)) {
                 updateTimeEpic(epicTask);
             }
             statusUpdate(epicTask);
@@ -299,6 +305,7 @@ public class InMemoryTaskManager implements TaskManager {
     private boolean isValidatePriorityTasks(Task task) {
         List<Task> tasks = new ArrayList<>(getPrioritizedTasks());
         boolean isValid = false;
+
         if (!tasks.isEmpty()) {
             for (Task listTask : tasks) {
                 if (task.getStartTime().isBefore(listTask.getStartTime())
