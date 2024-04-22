@@ -74,7 +74,7 @@ public class SubTaksHandler extends TasksHandler {
             SubTask task = gson.fromJson(data, SubTask.class);
 
             manager.updateSubtask(task);
-            writeResponse(exchange, "Task update", 200);
+            writeResponse(exchange, "Подзадача обновлена", 200);
 
         } else {
             writeResponse(exchange, "Задача с id " + taskId + " не найдена", 404);
@@ -86,9 +86,9 @@ public class SubTaksHandler extends TasksHandler {
         SubTask task = gson.fromJson(data, SubTask.class);
         try {
             manager.createSubtask(task);
-            writeResponse(exchange, "Task created", 201);
+            writeResponse(exchange, "Подзадача создана", 201);
         } catch (IntersectionException e) {
-            writeResponse(exchange, "Task time cross", 406);
+            writeResponse(exchange, "Временные рамки новой подзадачи пересекается с уже существующей", 406);
         }
     }
 

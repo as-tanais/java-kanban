@@ -44,7 +44,32 @@ public class EpicsHandler extends TasksHandler {
                 writeResponse(exchange, "NOT_FOUND", 404);
                 break;
             }
+            case GET_SUBTASK_BY_EPIC:{
+                getSubTasksByEpic(exchange);
+                break;
+            }
         }
+    }
+
+    private void getSubTasksByEpic(HttpExchange exchange) throws IOException{
+        Optional<Integer> taskIdOpt = getTaskId(exchange);
+        String response;
+        int statusCode;
+        if (taskIdOpt.isEmpty()) {
+            writeResponse(exchange, "Некорректный идентификатор поста", 400);
+            return;
+        }
+        int taskId = taskIdOpt.get();
+
+        if (manager.getEpicById(taskId) != null){
+            response = gson.toJson(manager.getSubtasksByEpicId(taskId));
+            statusCode =200;
+        } else {
+            response = "Задача с ID " + taskId + " не найдена";
+            statusCode = 404;
+        }
+
+        writeResponse(exchange, response, statusCode);
     }
 
     private void deleteEpicByIdHandle(HttpExchange exchange) throws IOException {
@@ -67,7 +92,7 @@ public class EpicsHandler extends TasksHandler {
         EpicTask task = gson.fromJson(data, EpicTask.class);
         try {
             manager.createEpicTask(task);
-            writeResponse(exchange, "Task created", 201);
+            writeResponse(exchange, "Суперзадача создана", 201);
         } catch (IntersectionException e) {
             writeResponse(exchange, "Task time cross", 406);
         }
@@ -89,7 +114,7 @@ public class EpicsHandler extends TasksHandler {
             EpicTask task = gson.fromJson(data, EpicTask.class);
 
             manager.updateEpic(task);
-            writeResponse(exchange, "Task update", 200);
+            writeResponse(exchange, "Задача обновлена", 200);
 
         } else {
             writeResponse(exchange, "Задача с id " + taskId + " не найдена", 404);
@@ -126,6 +151,11 @@ public class EpicsHandler extends TasksHandler {
 
     @Override
     protected Endpoint getEndpoint(String requestPath, String requestMethod) {
-        return super.getEndpoint(requestPath, requestMethod);
+        String[] pathParts = requestPath.split("/");
+        if (pathParts.length == 4 && pathParts[3].equals("subtasks")) {
+            return Endpoint.GET_SUBTASK_BY_EPIC;
+        }else {
+            return super.getEndpoint(requestPath, requestMethod);
+        }
     }
 }

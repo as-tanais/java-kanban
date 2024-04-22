@@ -64,6 +64,7 @@ public class TasksHandler implements HttpHandler {
 
     private void getTaskHandle(HttpExchange exchange) throws IOException {
 
+
         String response = gson.toJson(manager.getTasks());
         writeResponse(exchange, response, 200);
 
@@ -107,9 +108,9 @@ public class TasksHandler implements HttpHandler {
         Task task = gson.fromJson(data, Task.class);
         try {
             manager.createTask(task);
-            writeResponse(exchange, "Task created", 201);
+            writeResponse(exchange, "Задача создана", 201);
         } catch (IntersectionException e) {
-            writeResponse(exchange, "Task time cross", 406);
+            writeResponse(exchange, "Временные рамки новой задачи пересекается с уже существующей", 406);
         }
     }
 
@@ -128,7 +129,7 @@ public class TasksHandler implements HttpHandler {
             Task task = gson.fromJson(data, Task.class);
 
             manager.updateTask(task);
-            writeResponse(exchange, "Task update", 200);
+            writeResponse(exchange, "Задача обновлена", 200);
 
         } else {
             writeResponse(exchange, "Задача с id " + taskId + " не найдена", 404);

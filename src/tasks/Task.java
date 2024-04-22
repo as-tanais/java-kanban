@@ -117,10 +117,7 @@ public class Task {
                     "', startTime='" + startTime +
                     "', duration='" + duration +
                     "', endTime='" + getEndTime();
-        } else {
-
         }
-
         result = result + "'}";
         return result;
     }
