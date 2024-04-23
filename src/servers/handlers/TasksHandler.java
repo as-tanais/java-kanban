@@ -1,11 +1,11 @@
 package servers.handlers;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import exception.IntersectionException;
 import manager.TaskManager;
-import com.google.gson.Gson;
 import servers.Endpoint;
 import tasks.Task;
 
@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.Optional;
 
 public class TasksHandler implements HttpHandler {
@@ -21,7 +20,6 @@ public class TasksHandler implements HttpHandler {
     protected static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected final TaskManager manager;
     protected Gson gson = new GsonBuilder()
-            //.registerTypeAdapter(Instant.class, new InstantAdapter())
             .setPrettyPrinting()
             .create();
 

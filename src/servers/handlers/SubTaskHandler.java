@@ -9,9 +9,9 @@ import tasks.SubTask;
 import java.io.IOException;
 import java.util.Optional;
 
-public class SubTaksHandler extends TasksHandler {
+public class SubTaskHandler extends TasksHandler {
 
-    public SubTaksHandler(TaskManager manager) {
+    public SubTaskHandler(TaskManager manager) {
         super(manager);
     }
 

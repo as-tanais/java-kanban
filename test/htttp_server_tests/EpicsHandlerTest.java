@@ -7,6 +7,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.*;
 import servers.HttpTaskServer;
+import tasks.EpicTask;
+import tasks.SubTask;
 import tasks.Task;
 
 import java.io.IOException;
@@ -14,11 +16,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Instant;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TasksHandlerTest {
+public class EpicsHandlerTest {
 
     private static HttpTaskServer server;
     HttpClient client = HttpClient.newHttpClient();
@@ -38,21 +41,21 @@ public class TasksHandlerTest {
         server.stopServer();
     }
 
-    protected Task newSimpleTask(int id) {
-        return new Task("Task" + id, "Description task " + id);
+    protected EpicTask newSimpleTask(int id) {
+        return new EpicTask("Task" + id, "Description task " + id);
     }
 
 
     @Test
-    public void getTasksTest() throws IOException, InterruptedException {
+    public void getEpicTasksTest() throws IOException, InterruptedException {
 
-        Task taskOne = newSimpleTask(1);
-        Task taskTwo = newSimpleTask(2);
+        EpicTask taskOne = newSimpleTask(1);
+        EpicTask taskTwo = newSimpleTask(2);
 
-        server.manager.createTask(taskOne);
-        server.manager.createTask(taskTwo);
+        server.manager.createEpicTask(taskOne);
+        server.manager.createEpicTask(taskTwo);
 
-        URI uri = URI.create(BASE_URL + "tasks");
+        URI uri = URI.create(BASE_URL + "epics");
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
@@ -70,15 +73,15 @@ public class TasksHandlerTest {
     }
 
     @Test
-    public void getTasksByIdTest() throws IOException, InterruptedException {
+    public void getEpicTasksByIdTest() throws IOException, InterruptedException {
 
-        Task taskOne = newSimpleTask(1);
-        Task taskTwo = newSimpleTask(2);
+        EpicTask taskOne = newSimpleTask(1);
+        EpicTask taskTwo = newSimpleTask(2);
 
-        server.manager.createTask(taskOne);
-        server.manager.createTask(taskTwo);
+        server.manager.createEpicTask(taskOne);
+        server.manager.createEpicTask(taskTwo);
 
-        URI uri = URI.create(BASE_URL + "tasks/1");
+        URI uri = URI.create(BASE_URL + "epics/1");
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
@@ -95,12 +98,12 @@ public class TasksHandlerTest {
 
 
     @Test
-    public void postTaskTest() throws IOException, InterruptedException {
+    public void postEpicTaskTest() throws IOException, InterruptedException {
 
-        Task taskOne = newSimpleTask(1);
+        EpicTask taskOne = newSimpleTask(1);
         String body = GSON.toJson(taskOne);
 
-        URI uri = URI.create(BASE_URL + "tasks");
+        URI uri = URI.create(BASE_URL + "epics");
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .uri(uri)
@@ -111,7 +114,30 @@ public class TasksHandlerTest {
         HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
         assertEquals(201,response.statusCode());
-        assertEquals("Задача создана",response.body());
+        assertEquals("Суперзадача создана",response.body());
 
+    }
+
+
+    @Test
+    public void getAllSubTaskByEpic () throws IOException, InterruptedException {
+        EpicTask epicTask = new EpicTask("Epic 1", "Des epic 1");
+        SubTask subTaskOne = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(300), 1, 1);
+        SubTask subTaskTwo = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(700), 1, 1);
+
+        server.manager.createEpicTask(epicTask);
+        server.manager.createSubtask(subTaskOne);
+        server.manager.createSubtask(subTaskTwo);
+
+        URI uri = URI.create(BASE_URL + "epics/1/subtasks");
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .GET()
+                .uri(uri)
+                .version(HttpClient.Version.HTTP_1_1)
+                .header("Accept", "application/json")
+                .build();
+
+        HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200,response.statusCode());
     }
 }

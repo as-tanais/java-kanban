@@ -44,14 +44,14 @@ public class EpicsHandler extends TasksHandler {
                 writeResponse(exchange, "NOT_FOUND", 404);
                 break;
             }
-            case GET_SUBTASK_BY_EPIC:{
+            case GET_SUBTASK_BY_EPIC: {
                 getSubTasksByEpic(exchange);
                 break;
             }
         }
     }
 
-    private void getSubTasksByEpic(HttpExchange exchange) throws IOException{
+    private void getSubTasksByEpic(HttpExchange exchange) throws IOException {
         Optional<Integer> taskIdOpt = getTaskId(exchange);
         String response;
         int statusCode;
@@ -61,9 +61,9 @@ public class EpicsHandler extends TasksHandler {
         }
         int taskId = taskIdOpt.get();
 
-        if (manager.getEpicById(taskId) != null){
+        if (manager.getEpicById(taskId) != null) {
             response = gson.toJson(manager.getSubtasksByEpicId(taskId));
-            statusCode =200;
+            statusCode = 200;
         } else {
             response = "Задача с ID " + taskId + " не найдена";
             statusCode = 404;
@@ -154,7 +154,7 @@ public class EpicsHandler extends TasksHandler {
         String[] pathParts = requestPath.split("/");
         if (pathParts.length == 4 && pathParts[3].equals("subtasks")) {
             return Endpoint.GET_SUBTASK_BY_EPIC;
-        }else {
+        } else {
             return super.getEndpoint(requestPath, requestMethod);
         }
     }
