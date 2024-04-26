@@ -2,10 +2,10 @@ package htttp_server_tests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import servers.HttpTaskServer;
 import tasks.EpicTask;
 import tasks.SubTask;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EpicsHandlerTest {
 
     private static HttpTaskServer server;
-    HttpClient client = HttpClient.newHttpClient();
+    private final HttpClient client = HttpClient.newHttpClient();
     private final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .create();

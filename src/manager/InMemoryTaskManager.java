@@ -44,7 +44,7 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(epics.values());
     }
 
-    public int increaseId() {
+    private int increaseId() {
         return ++id;
     }
 

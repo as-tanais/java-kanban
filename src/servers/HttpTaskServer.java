@@ -17,7 +17,7 @@ public class HttpTaskServer {
 
     private static final int PORT = 8080;
     private final HttpServer server;
-    public static TaskManager manager;
+    private static TaskManager manager;
 
     public HttpTaskServer() throws IOException {
         manager = Managers.getDefault();
@@ -34,6 +34,10 @@ public class HttpTaskServer {
         System.out.println("HTTP-server started");
     }
 
+    public static TaskManager getManager() {
+        return manager;
+    }
+
     public void stopServer() {
         server.stop(0);
         System.out.println("HTTP-server stoped");
@@ -46,7 +50,7 @@ public class HttpTaskServer {
         Task taskOne = new Task("Task 1", "Description of task 1", Instant.now(), 5);
         Task taskTwo = new Task("Task 2", "Description of task 2");
 
-        manager.createTask(taskOne);
+        getManager().createTask(taskOne);
         manager.createTask(taskTwo);
 
         EpicTask epicTaskOne = new EpicTask("Epic 1", "Des epic 1");

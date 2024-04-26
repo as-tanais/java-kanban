@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TasksHandlerTest {
 
     private static HttpTaskServer server;
-    HttpClient client = HttpClient.newHttpClient();
+    private final HttpClient client = HttpClient.newHttpClient();
     private final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .create();
