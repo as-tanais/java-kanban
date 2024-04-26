@@ -48,22 +48,22 @@ public class HistoryAndPriorityHandlerTest {
         Task taskOne = new Task("Task 1", "Description of task 1", Instant.now(), 5);
         Task taskTwo = new Task("Task 2", "Description of task 2");
 
-        server.manager.createTask(taskOne);
-        server.manager.createTask(taskTwo);
+        server.getManager().createTask(taskOne);
+        server.getManager().createTask(taskTwo);
 
         EpicTask epicTaskOne = new EpicTask("Epic 1", "Des epic 1");
 
-        server.manager.createEpicTask(epicTaskOne);
+        server.getManager().createEpicTask(epicTaskOne);
 
         SubTask subTaskOne = new SubTask("Sub 1", "Des sub 1", Instant.now().plusSeconds(700), 10, 3);
 
 
-        server.manager.createSubtask(subTaskOne);
+        server.getManager().createSubtask(subTaskOne);
 
-        server.manager.getTaskById(1);
-        server.manager.getTaskById(2);
-        server.manager.getEpicById(3);
-        server.manager.getSubtaskById(4);
+        server.getManager().getTaskById(1);
+        server.getManager().getTaskById(2);
+        server.getManager().getEpicById(3);
+        server.getManager().getSubtaskById(4);
 
         URI uri = URI.create(BASE_URL + "history");
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -89,22 +89,22 @@ public class HistoryAndPriorityHandlerTest {
         Task taskOne = new Task("Task 1", "Description of task 1", Instant.now(), 5);
         Task taskTwo = new Task("Task 2", "Description of task 2");
 
-        server.manager.createTask(taskOne);
-        server.manager.createTask(taskTwo);
+        server.getManager().createTask(taskOne);
+        server.getManager().createTask(taskTwo);
 
         EpicTask epicTaskOne = new EpicTask("Epic 1", "Des epic 1");
 
-        server.manager.createEpicTask(epicTaskOne);
+        server.getManager().createEpicTask(epicTaskOne);
 
         SubTask subTaskOne = new SubTask("Sub 1", "Des sub 1", Instant.now().plusSeconds(700), 10, 3);
 
 
-        server.manager.createSubtask(subTaskOne);
+        server.getManager().createSubtask(subTaskOne);
 
-        server.manager.getTaskById(1);
-        server.manager.getTaskById(2);
-        server.manager.getEpicById(3);
-        server.manager.getSubtaskById(4);
+        server.getManager().getTaskById(1);
+        server.getManager().getTaskById(2);
+        server.getManager().getEpicById(3);
+        server.getManager().getSubtaskById(4);
 
         URI uri = URI.create(BASE_URL + "prioritized");
         HttpRequest httpRequest = HttpRequest.newBuilder()

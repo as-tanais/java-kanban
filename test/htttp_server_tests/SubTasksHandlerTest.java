@@ -49,9 +49,9 @@ public class SubTasksHandlerTest {
         SubTask subTaskOne = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(300), 1, 1);
         SubTask subTaskTwo = new SubTask("Task 2", "Description task 2", Instant.now().plusSeconds(600), 1, 1);
 
-        server.manager.createEpicTask(epicTask);
-        server.manager.createSubtask(subTaskOne);
-        server.manager.createSubtask(subTaskTwo);
+        server.getManager().createEpicTask(epicTask);
+        server.getManager().createSubtask(subTaskOne);
+        server.getManager().createSubtask(subTaskTwo);
 
         URI uri = URI.create(BASE_URL + "subtasks");
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -74,8 +74,8 @@ public class SubTasksHandlerTest {
         EpicTask epicTask = new EpicTask("Epic 1", "Des epic 1");
         SubTask subTaskOne = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(300), 1, 1);
 
-        server.manager.createEpicTask(epicTask);
-        server.manager.createSubtask(subTaskOne);
+        server.getManager().createEpicTask(epicTask);
+        server.getManager().createSubtask(subTaskOne);
 
         URI uri = URI.create(BASE_URL + "subtasks/2");
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -100,7 +100,7 @@ public class SubTasksHandlerTest {
         EpicTask epicTask = new EpicTask("Epic 1", "Des epic 1");
         SubTask subTaskOne = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(300), 1, 1);
 
-        server.manager.createEpicTask(epicTask);
+        server.getManager().createEpicTask(epicTask);
         String body = GSON.toJson(subTaskOne);
 
         URI uri = URI.create(BASE_URL + "subtasks");
@@ -124,8 +124,8 @@ public class SubTasksHandlerTest {
         SubTask subTaskOne = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(300), 1, 1);
         SubTask subTaskTwo = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(300), 1, 1);
 
-        server.manager.createEpicTask(epicTask);
-        server.manager.createSubtask(subTaskOne);
+        server.getManager().createEpicTask(epicTask);
+        server.getManager().createSubtask(subTaskOne);
         String body = GSON.toJson(subTaskTwo);
 
 

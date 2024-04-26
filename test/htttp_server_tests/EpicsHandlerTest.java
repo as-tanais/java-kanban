@@ -52,8 +52,8 @@ public class EpicsHandlerTest {
         EpicTask taskOne = newSimpleTask(1);
         EpicTask taskTwo = newSimpleTask(2);
 
-        server.manager.createEpicTask(taskOne);
-        server.manager.createEpicTask(taskTwo);
+        server.getManager().createEpicTask(taskOne);
+        server.getManager().createEpicTask(taskTwo);
 
         URI uri = URI.create(BASE_URL + "epics");
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -78,8 +78,8 @@ public class EpicsHandlerTest {
         EpicTask taskOne = newSimpleTask(1);
         EpicTask taskTwo = newSimpleTask(2);
 
-        server.manager.createEpicTask(taskOne);
-        server.manager.createEpicTask(taskTwo);
+        server.getManager().createEpicTask(taskOne);
+        server.getManager().createEpicTask(taskTwo);
 
         URI uri = URI.create(BASE_URL + "epics/1");
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -125,9 +125,9 @@ public class EpicsHandlerTest {
         SubTask subTaskOne = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(300), 1, 1);
         SubTask subTaskTwo = new SubTask("Task 1", "Description task 1", Instant.now().plusSeconds(700), 1, 1);
 
-        server.manager.createEpicTask(epicTask);
-        server.manager.createSubtask(subTaskOne);
-        server.manager.createSubtask(subTaskTwo);
+        server.getManager().createEpicTask(epicTask);
+        server.getManager().createSubtask(subTaskOne);
+        server.getManager().createSubtask(subTaskTwo);
 
         URI uri = URI.create(BASE_URL + "epics/1/subtasks");
         HttpRequest httpRequest = HttpRequest.newBuilder()

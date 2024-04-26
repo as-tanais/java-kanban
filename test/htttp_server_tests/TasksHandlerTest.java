@@ -49,8 +49,8 @@ public class TasksHandlerTest {
         Task taskOne = newSimpleTask(1);
         Task taskTwo = newSimpleTask(2);
 
-        server.manager.createTask(taskOne);
-        server.manager.createTask(taskTwo);
+        server.getManager().createTask(taskOne);
+        server.getManager().createTask(taskTwo);
 
         URI uri = URI.create(BASE_URL + "tasks");
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -75,8 +75,8 @@ public class TasksHandlerTest {
         Task taskOne = newSimpleTask(1);
         Task taskTwo = newSimpleTask(2);
 
-        server.manager.createTask(taskOne);
-        server.manager.createTask(taskTwo);
+        server.getManager().createTask(taskOne);
+        server.getManager().createTask(taskTwo);
 
         URI uri = URI.create(BASE_URL + "tasks/1");
         HttpRequest httpRequest = HttpRequest.newBuilder()

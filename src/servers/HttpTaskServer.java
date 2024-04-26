@@ -51,17 +51,17 @@ public class HttpTaskServer {
         Task taskTwo = new Task("Task 2", "Description of task 2");
 
         getManager().createTask(taskOne);
-        manager.createTask(taskTwo);
+        getManager().createTask(taskTwo);
 
         EpicTask epicTaskOne = new EpicTask("Epic 1", "Des epic 1");
-        manager.createEpicTask(epicTaskOne);
+        getManager().createEpicTask(epicTaskOne);
 
         SubTask subTaskOne = new SubTask("Sub 1", "Des sub 1", Instant.now().plusSeconds(700), 10, 3);
-        manager.createSubtask(subTaskOne);
+        getManager().createSubtask(subTaskOne);
 
-        manager.getTaskById(1);
-        manager.getTaskById(2);
-        manager.getEpicById(3);
+        getManager().getTaskById(1);
+        getManager().getTaskById(2);
+        getManager().getEpicById(3);
 
 
         httpTaskServer.startServer();
